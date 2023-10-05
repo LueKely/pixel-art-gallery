@@ -3,8 +3,28 @@
 
 
 <div class="time-container">
-  <h1>SLP 0:00:00</h1>
+  <h1 id="clock">SLP 0:00:00</h1>
 </div>
+
+<script>
+
+function updateClock() {
+    const clockElement = document.getElementById("clock");
+    if (clockElement) {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, "0");
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        const seconds = now.getSeconds().toString().padStart(2, "0");
+        clockElement.innerText = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Request the next animation frame
+    requestAnimationFrame(updateClock);
+}
+
+// Initial call to set the clock
+updateClock();
+</script>
 
 <style>
 .time-container{
