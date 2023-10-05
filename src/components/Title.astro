@@ -1,0 +1,26 @@
+---
+interface Props {
+  name: string;
+}
+
+const {name} = Astro.props;
+---
+
+<div class="title-container">
+<h2> {name} </h2>
+</div>
+
+<style>
+
+  .title-container{
+    padding: 5px 30px;
+
+
+    height: var(--section-size);
+    width: 100%;
+
+    border-bottom: var(--border-color) var(--border-width) solid ;
+    box-shadow: 0 var(--shadow-position) var(--shadow-blur) var(--crt-color-right),inset 0px var(--shadow-position-opposite) var(--shadow-blur) var(--crt-color-left);
+
+  }
+</style>

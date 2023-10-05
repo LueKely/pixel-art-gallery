@@ -1,3 +1,47 @@
-<div>
-  HELLO JOE MAMA
-</div>
+<nav class="">
+  <div class="home-container">
+    <a href="" target="_blank" class="home-link">HOME</a>
+    <div class="box"></div>
+  </div>
+
+<a href="" target="_blank">INFO</a>
+</nav>
+<style>
+
+nav{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  
+  width: 75px;
+  height: 100dvh;
+  
+  border-right: var(--border-color) var(--border-width) solid ;
+
+  box-shadow: var(--shadow-position) 0  var(--shadow-blur) var(--crt-color-right), inset var(--shadow-position-opposite) 0 var(--shadow-blur) var(--crt-color-left);
+}
+
+.home-link{
+  height: var(--block-height);
+  width: 100%;
+
+  border-bottom: var(--border-color) var(--border-width) solid ;
+  box-shadow: 0 var(--shadow-position) var(--shadow-blur) var(--crt-color-right),inset 0px var(--shadow-position-opposite) var(--shadow-blur) var(--crt-color-left);
+}
+.home-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.box{
+  height: var(--section-size);
+  width: 100%;
+
+  border-bottom: var(--border-color) var(--border-width) solid ;
+  box-shadow: 0 var(--shadow-position) var(--shadow-blur) var(--crt-color-right),inset 0px var(--shadow-position-opposite) var(--shadow-blur) var(--crt-color-left);
+}
+</style>
