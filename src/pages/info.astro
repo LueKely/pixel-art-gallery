@@ -12,21 +12,188 @@ import Layout from '../layouts/Layout.astro';
     <h2>&gt; Who are you? </h2>
     <p>The pixel art gallery is where i put all my artwork for random people to see who have stumbled upon my site.</p>
     <br>
-    
+    <br>
     <h2>In loving memory of my uncle.</h2>
   </section>
   
   
   <section>
 
-    <canvas></canvas>
+    <canvas id="c"></canvas>
 
   </section>
 
 </main>
 </Layout>
 
+<script>
+  // src/main.ts
+
+import * as THREE from 'three';
+
+
+
+function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
+	const canvas = renderer.domElement;
+	const pixelRatio = window.devicePixelRatio;
+	const width = (canvas.clientWidth * pixelRatio) | 0;
+	const height = (canvas.clientHeight * pixelRatio) | 0;
+	const needResize = canvas.width !== width || canvas.height !== height;
+	if (needResize) {
+		renderer.setSize(width, height, false);
+	}
+	return needResize;
+}
+
+function main() {
+	const canvas: HTMLCanvasElement | null =
+		document.querySelector<HTMLCanvasElement>('#c');
+
+	// checks whether the canvas exists
+	if (canvas === null) {
+		throw new Error('CANVAS ELEMENT DOES NOT EXIST');
+	}
+
+	// rederer
+	const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+
+	// camera
+	const fov = 75;
+	const aspect = 2; // the canvas default
+	const near = 0.1;
+	const far = 100;
+	const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+
+	//camera position
+	camera.position.z = 30;
+
+	//scene
+	const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x032681)
+
+	// light
+	const color = 0xffffff;
+	const intensity = 3;
+	const light = new THREE.DirectionalLight(color, intensity);
+	light.position.set(-1, 2, 4);
+	scene.add(light);
+
+  // shaders
+  const fragment:string = `#ifdef GL_ES
+precision mediump float;
+#endif
+
+
+uniform float time; // basically u_time
+uniform vec2 u_resolution;
+varying vec2 vUv; //the resolution
+
+void main(){
+  // choose either of the two
+  vec2 coord = vUv;
+  // vec2 coord =   gl_FragCoord.xy / u_resolution;
+  // gl_FragColor = vec4(cos(len * 2.0), cos(len - 1.0), sin(time *0.5) , 1.0);
+
+  gl_FragColor = vec4(1.0);
+
+}`;
+
+const vertex = `#ifdef GL_ES
+precision mediump float;
+#endif
+
+varying vec2 vUv;
+uniform float time;		
+  
+void main()	{
+	vUv = uv;
+	// projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+	gl_Position = projectionMatrix 
+		* modelViewMatrix
+		* vec4(position.x, position.y, position.z, 1.0);
+
+
+// regular mode
+	// gl_Position = projectionMatrix 
+	// 	* modelViewMatrix
+	// 	* vec4(position.x, postion.y, position.z, 1.0);
+}`
+
+
+	//shape
+	const geo = new THREE.SphereGeometry(15, 24, 12);
+	const shapeMaterial = new THREE.ShaderMaterial({
+		wireframe: true,
+		side: THREE.DoubleSide,
+		uniforms: {
+			u_resolution: {
+				value: new THREE.Vector2(),
+			}, // This will be automatically set by Three.js
+			time: { value: 0.0 }, // Initialize time to 0
+		},
+		vertexShader: vertex,
+		fragmentShader: fragment,
+	});
+
+	// uniform variables
+	const canvasSize = new THREE.Vector2(canvas.width, canvas.height);
+	shapeMaterial.uniforms.u_resolution.value.copy(canvasSize);
+
+	const shapeMesh = new THREE.Mesh(geo, shapeMaterial);
+	scene.add(shapeMesh);
+
+	// renderer
+	renderer.render(scene, camera);
+
+	// time
+	const clock = new THREE.Clock();
+
+	// animation
+	function render() {
+		const deltaTime = clock.getDelta();
+		// resizes the display
+
+		if (resizeRendererToDisplaySize(renderer)) {
+			const canvas = renderer.domElement;
+			camera.aspect = canvas.width / canvas.height;
+			camera.updateProjectionMatrix();
+		}
+
+		// convert time to seconds
+		// shapeMesh.rotation.x += deltaTime;
+		shapeMesh.rotation.y -= 0.5 * deltaTime;
+
+		renderer.render(scene, camera);
+		requestAnimationFrame(render);
+
+		// update time from the fragment shader
+		shapeMaterial.uniforms.time.value += 0.01;
+
+		if (canvas == null) {
+			throw new Error('CANVAS DOES NOT EXIST');
+		}
+		const resolution = new THREE.Vector2(canvas.width, canvas.height);
+		shapeMaterial.uniforms.u_resolution.value.copy(resolution);
+	}
+
+	requestAnimationFrame(render);
+}
+
+main();
+
+
+</script>
+
 <style>
+
+#c{
+  background-color: var(--background-color);
+	width: 100%;
+	height: 100%;
+	display: block;
+  filter: blur(1px);
+}
+
 
 .main-container{
   width: 100%;
