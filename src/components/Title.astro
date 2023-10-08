@@ -16,8 +16,12 @@ const {name} = Astro.props;
     padding: 5px 30px;
 
 
-    height: var(--section-size);
+    min-height: var(--section-size);
     width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: start;
 
     border-bottom: var(--border-color) var(--border-width) solid ;
     box-shadow: 0 var(--shadow-position) var(--shadow-blur) var(--crt-color-right),inset 0px var(--shadow-position-opposite) var(--shadow-blur) var(--crt-color-left);
