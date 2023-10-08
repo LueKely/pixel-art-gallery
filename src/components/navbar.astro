@@ -46,6 +46,12 @@ svg{
   height: 20px;
 }
 
+.icon.right{
+  animation: icon-anaglyph-right-mobile 10ms ease  infinite alternate-reverse none !important ;
+}
+.icon.left{
+  animation: icon-anaglyph-left-mobile 10ms ease  infinite alternate-reverse none !important;
+}
 
 }
 
@@ -160,7 +166,7 @@ nav{
 @keyframes icon-anaglyph-left {
   
 0%{
-left: 16px;
+left: 18px;
 }
 
 100%{
@@ -169,11 +175,34 @@ left:15px
 
 }
 
+@keyframes icon-anaglyph-left-mobile {
+  
+  0%{
+  left: 19px;
+  }
+  
+  100%{
+  left:18px;
+  }
+  
+  }
+
+  @keyframes icon-anaglyph-right-mobile {
+  
+  0%{
+  right: 19px;
+  }
+  
+  100%{
+  right:18px
+  }
+  
+  }
 
 @keyframes icon-anaglyph-right {
   
 0%{
-right: 16px;
+right: 18px;
 }
 
 100%{

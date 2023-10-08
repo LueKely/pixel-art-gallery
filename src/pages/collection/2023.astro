@@ -19,9 +19,6 @@ const imagesJuly = await Astro.glob("/src/images/2023/july/*").then(files => {
   return files.map(file => file.default);
 });
 
-const imagesAug = await Astro.glob("/src/images/2023/aug/*").then(files => {
-  return files.map(file => file.default);
-});
 
 const imagesSept = await Astro.glob("/src/images/2023/sept/*").then(files => {
   return files.map(file => file.default);
@@ -34,7 +31,6 @@ const imagesSept = await Astro.glob("/src/images/2023/sept/*").then(files => {
 <main class="main-container">
 
   <ImageSection month='September' images={imagesSept}></ImageSection>
-  <ImageSection month='August' images={imagesAug}></ImageSection>
   <ImageSection month='July' images={imagesJuly}></ImageSection>
   <ImageSection month='May' images={imagesMay}></ImageSection>
   <ImageSection month='April' images={imagesApril}></ImageSection>
