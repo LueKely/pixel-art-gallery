@@ -78,69 +78,28 @@ function main() {
 	light.position.set(-1, 2, 4);
 	scene.add(light);
 
-  // shaders
-  const fragment:string = `#ifdef GL_ES
-precision mediump float;
-#endif
-
-
-uniform float time; // basically u_time
-uniform vec2 u_resolution;
-varying vec2 vUv; //the resolution
-
-void main(){
-  // choose either of the two
-  vec2 coord = vUv;
-  // vec2 coord =   gl_FragCoord.xy / u_resolution;
-  // gl_FragColor = vec4(cos(len * 2.0), cos(len - 1.0), sin(time *0.5) , 1.0);
-
-  gl_FragColor = vec4(1.0);
-
-}`;
-
-const vertex = `#ifdef GL_ES
-precision mediump float;
-#endif
-
-varying vec2 vUv;
-uniform float time;		
-  
-void main()	{
-	vUv = uv;
-	// projectionMatrix, modelViewMatrix, position -> passed in from Three.js
-	gl_Position = projectionMatrix 
-		* modelViewMatrix
-		* vec4(position.x, position.y, position.z, 1.0);
-
-
-// regular mode
-	// gl_Position = projectionMatrix 
-	// 	* modelViewMatrix
-	// 	* vec4(position.x, postion.y, position.z, 1.0);
-}`
-
 
 	//shape
 	const geo = new THREE.SphereGeometry(15, 24, 12);
-	const shapeMaterial = new THREE.ShaderMaterial({
-		wireframe: true,
-		side: THREE.DoubleSide,
-		uniforms: {
-			u_resolution: {
-				value: new THREE.Vector2(),
-			}, // This will be automatically set by Three.js
-			time: { value: 0.0 }, // Initialize time to 0
-		},
-		vertexShader: vertex,
-		fragmentShader: fragment,
-	});
+	const shapeMaterial = new THREE.MeshBasicMaterial({
+	 color: new THREE.Color('white'),
+	 wireframe:true,
+	})
 
-	// uniform variables
-	const canvasSize = new THREE.Vector2(canvas.width, canvas.height);
-	shapeMaterial.uniforms.u_resolution.value.copy(canvasSize);
+	const leftMaterial = new THREE.MeshBasicMaterial({color:new THREE.Color(0xe0c054d2),wireframe:true});
+	const rightMaterial = new THREE.MeshBasicMaterial({color:new THREE.Color(0xef83ebd2),wireframe:true});
 
 	const shapeMesh = new THREE.Mesh(geo, shapeMaterial);
+	const leftMesh = new THREE.Mesh(geo,leftMaterial);
+	const rightMesh = new THREE.Mesh(geo,rightMaterial);
+
 	scene.add(shapeMesh);
+	scene.add(leftMesh);
+	scene.add(rightMesh);
+
+	leftMesh.position.z = 0.15;
+	rightMesh.position.z = 0.5;
+
 
 	// renderer
 	renderer.render(scene, camera);
@@ -162,18 +121,18 @@ void main()	{
 		// convert time to seconds
 		// shapeMesh.rotation.x += deltaTime;
 		shapeMesh.rotation.y -= 0.5 * deltaTime;
-
+		leftMesh.rotation.y -= 0.5 * deltaTime;
+		rightMesh.rotation.y -= 0.5 * deltaTime;
+		
 		renderer.render(scene, camera);
 		requestAnimationFrame(render);
 
 		// update time from the fragment shader
-		shapeMaterial.uniforms.time.value += 0.01;
 
 		if (canvas == null) {
 			throw new Error('CANVAS DOES NOT EXIST');
 		}
 		const resolution = new THREE.Vector2(canvas.width, canvas.height);
-		shapeMaterial.uniforms.u_resolution.value.copy(resolution);
 	}
 
 	requestAnimationFrame(render);
