@@ -1,0 +1,44 @@
+---
+import { Image, type AstroAssets } from 'astro:assets';
+
+
+interface Props {
+  month: string;
+  images: ImageMetadata[];
+}
+
+const {images} = Astro.props;
+const {month} = Astro.props;
+---
+
+
+<section>
+  <h2>{month}</h2>
+    <ul>
+      {
+        images.map((image)=>( <Image src={image} alt="tite"></Image>))
+      }
+    </ul>
+  <br>
+</section>
+
+
+
+<style>
+
+
+h2{margin-left:10px}
+
+ul{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  padding-inline: 10px;
+
+  row-gap: 10px;
+  column-gap: 10px;
+}
+  </style>

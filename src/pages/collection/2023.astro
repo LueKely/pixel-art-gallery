@@ -1,11 +1,56 @@
 ---
 import  Layout  from '@layouts/Layout.astro';
+import ImageSection from '@components/imageSection.astro';
+
+
+const images = await Astro.glob("/src/images/2023/mar/*").then(files => {
+  return files.map(file => file.default);
+});
+
+const imagesApril = await Astro.glob("/src/images/2023/apr/*").then(files => {
+  return files.map(file => file.default);
+});
+
+const imagesMay = await Astro.glob("/src/images/2023/may/*").then(files => {
+  return files.map(file => file.default);
+});
+
+const imagesJuly = await Astro.glob("/src/images/2023/july/*").then(files => {
+  return files.map(file => file.default);
+});
+
+const imagesAug = await Astro.glob("/src/images/2023/aug/*").then(files => {
+  return files.map(file => file.default);
+});
+
+const imagesSept = await Astro.glob("/src/images/2023/sept/*").then(files => {
+  return files.map(file => file.default);
+});
+
+
 ---
 
 <Layout title='Collections/2023'>
-<div>2023</div>
+<main class="main-container">
+
+  <ImageSection month='September' images={imagesSept}></ImageSection>
+  <ImageSection month='August' images={imagesAug}></ImageSection>
+  <ImageSection month='July' images={imagesJuly}></ImageSection>
+  <ImageSection month='May' images={imagesMay}></ImageSection>
+  <ImageSection month='April' images={imagesApril}></ImageSection>
+  <ImageSection month='March' images={images}></ImageSection>
+  <div> </div>
+</main>
 </Layout>
 
 <style>
+
+.main-container{
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+}
 
 </style>
